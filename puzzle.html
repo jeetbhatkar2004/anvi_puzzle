@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Anvi ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=DM+Mono:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0c0a10;--surface:#151219;--card:#1c1823;--border:#2a2535;--border2:#332d42;
+  --cream:#ede5d4;--cream2:#c8bc9e;--gold:#c8924a;--gold2:#e8b96a;
+  --rose:#c4768a;--rose2:#e09aae;--sage:#7aab8a;--muted:#5a5268;--muted2:#7a7088;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(196,118,138,.07),transparent),
+             radial-gradient(ellipse 60% 80% at 80% 100%,rgba(200,146,74,.06),transparent)}
+.screen{display:none;position:relative;z-index:1}
+.screen.active{display:block}
+#intro.active,#win-screen.active{display:flex}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted2)}
+/* INTRO */
+#intro{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 28px}
+.intro-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(44px,11vw,72px);color:var(--cream);margin:20px 0 16px;line-height:1.1}
+.intro-title em{color:var(--gold)}
+.intro-sub{font-size:18px;font-style:italic;color:var(--muted2);max-width:320px;line-height:1.7;margin-bottom:48px}
+.rules-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;max-width:360px;text-align:left;margin-bottom:44px}
+.rules-card h3{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.rule{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.rule-n{font-family:'DM Mono',monospace;font-size:11px;color:var(--rose);min-width:18px;margin-top:2px}
+.rule-t{font-size:15px;color:var(--cream2);line-height:1.5}
+/* BUTTONS */
+.btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 36px;border-radius:6px;border:none;cursor:pointer;transition:all .18s;outline:none}
+.btn-gold{background:var(--gold);color:var(--bg)}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-gold:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--cream);border-color:var(--muted2)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+/* PUZZLE WRAPPER */
+#puzzle-screen{max-width:520px;margin:0 auto;padding:28px 20px 80px}
+.prog-wrap{margin-bottom:36px}
+.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-track{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .7s ease}
+.stage-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
+.stage-name{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(24px,6vw,36px);color:var(--cream);margin-bottom:8px;line-height:1.2}
+.stage-desc{font-size:16px;font-style:italic;color:var(--muted2);line-height:1.6;margin-bottom:28px}
+.puzzle-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:18px}
+.hint-btn{background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);padding:0;transition:color .2s}
+.hint-btn:hover{color:var(--rose)}
+.hint-box{background:rgba(196,118,138,.07);border:1px solid rgba(196,118,138,.18);border-radius:8px;padding:14px 16px;margin-top:12px;font-size:14px;font-style:italic;color:var(--rose2);display:none;line-height:1.6}
+.hint-box.open{display:block}
+.hint-cost{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--muted);margin-top:8px}
+.fb{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:10px 14px;border-radius:6px;display:none;margin:12px 0}
+.fb.ok{display:block;color:var(--sage);background:rgba(122,171,138,.08);border:1px solid rgba(122,171,138,.2)}
+.fb.bad{display:block;color:#c47a7a;background:rgba(196,122,122,.08);border:1px solid rgba(196,122,122,.18);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.success-panel{display:none;text-align:center;padding:28px 0 8px}
+.success-panel.show{display:block}
+.success-icon{font-size:44px;animation:pop .5s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.success-title{font-family:'Playfair Display',serif;font-style:italic;font-size:24px;color:var(--sage);margin:12px 0 6px}
+.success-sub{font-size:14px;font-style:italic;color:var(--muted2);margin-bottom:24px}
+
+/* ── STAGE 1: ROTARY DIAL ── */
+.dial-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+.cipher-display{font-family:'DM Mono',monospace;font-size:16px;color:var(--gold2);letter-spacing:.3em;text-align:center;padding:12px;background:rgba(200,146,74,.05);border-radius:6px;border:1px solid rgba(200,146,74,.15)}
+.cipher-sublabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:4px}
+#dial-svg{cursor:grab;touch-action:none;display:block}
+#dial-svg:active{cursor:grabbing}
+.shift-row{display:flex;flex-direction:column;align-items:center;gap:2px}
+.shift-val{font-family:'DM Mono',monospace;font-size:28px;color:var(--cream)}
+.shift-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.decoded-box{font-family:'DM Mono',monospace;font-size:20px;color:var(--gold);background:rgba(200,146,74,.08);border:1px solid rgba(200,146,74,.2);border-radius:8px;padding:14px 18px;text-align:center;letter-spacing:.3em;width:100%}
+
+/* ── STAGE 2: DRAG SORT ── */
+.vanity-clues{font-size:14px;font-family:'DM Mono',monospace;color:var(--cream2);line-height:2.1;margin-bottom:18px}
+.vanity-clues span{color:var(--gold)}
+.shelf-positions{display:flex;justify-content:space-around;padding:0 4px;margin-bottom:6px}
+.shelf-pos-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;flex:1;text-align:center}
+.shelf{display:flex;gap:6px;padding:14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;min-height:88px;align-items:stretch}
+.vanity-item{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:10px 6px;text-align:center;cursor:grab;transition:all .15s;flex:1;user-select:none;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.vanity-item:active{cursor:grabbing;transform:scale(1.06);border-color:var(--gold)}
+.vanity-item.drag-over{border-color:var(--rose);background:rgba(196,118,138,.1);transform:scale(1.02)}
+.vanity-item.dragging{opacity:.35;border-style:dashed}
+.item-emoji{font-size:22px;line-height:1}
+.item-name{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2);white-space:nowrap}
+
+/* ── STAGE 3: CONSTELLATION ── */
+.constellation-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+#star-canvas{border-radius:12px;touch-action:none;display:block;max-width:100%}
+.seq-display{font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.12em;text-align:center;min-height:22px}
+
+/* ── STAGE 4: TILE SLIDER ── */
+.slider-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.tile-target{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted2);text-align:center}
+.tile-target span{color:var(--gold)}
+#tile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:255px;height:255px}
+.tile{background:var(--card);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;user-select:none;font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--cream)}
+.tile:hover:not(.empty){border-color:var(--gold);background:rgba(200,146,74,.08)}
+.tile.empty{background:transparent;border:1px dashed var(--border);cursor:default}
+.tile.empty:hover{border-color:var(--border);background:transparent}
+.moves-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
+
+/* ── STAGE 5: MEMORY ── */
+.memory-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+#memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:300px}
+.mem-card{aspect-ratio:1;border-radius:8px;cursor:pointer;perspective:600px;user-select:none}
+.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .35s ease;border-radius:8px}
+.mem-card.flipped .mem-inner,.mem-card.matched .mem-inner{transform:rotateY(180deg)}
+.mem-front,.mem-back{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:20px}
+.mem-front{background:var(--card);border:1px solid var(--border2)}
+.mem-back{background:var(--surface);border:1px solid var(--border);transform:rotateY(180deg)}
+.mem-card.matched .mem-front,.mem-card.matched .mem-back{border-color:var(--sage);background:rgba(122,171,138,.12)}
+.mem-q{font-family:'DM Mono',monospace;font-size:16px;color:var(--rose)}
+.memory-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:17px;color:var(--gold);text-align:center;min-height:26px}
+.pairs-left{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+/* ── WIN ── */
+#win-screen{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px}
+.win-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(40px,10vw,68px);color:var(--gold);margin:16px 0 12px;animation:fadeUp .8s ease both}
+.win-sub{font-size:17px;font-style:italic;color:var(--muted2);margin-bottom:48px;animation:fadeUp .8s .15s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.roulette-section{animation:fadeUp .8s .3s ease both;width:100%;max-width:340px}
+.roulette-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted2);margin-bottom:20px}
+.wheel-wrap{position:relative;width:280px;height:280px;margin:0 auto 24px}
+#wheel-canvas{display:block;border-radius:50%}
+.wheel-ptr{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:20px solid var(--gold2);z-index:10}
+.wheel-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:var(--bg);border:3px solid var(--gold);border-radius:50%;z-index:10}
+.prize-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px;min-height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.prize-emoji-big{font-size:36px;margin-bottom:8px}
+.prize-name-big{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:var(--cream);margin-bottom:4px}
+.prize-desc-text{font-size:13px;font-style:italic;color:var(--muted2)}
+.star-field{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sp{position:absolute;border-radius:50%;background:var(--gold);animation:tw 3s infinite}
+@keyframes tw{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:.7;transform:scale(1.6)}}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="eyebrow" style="margin-bottom:28px">from jeet, with love</div>
+  <h1 class="intro-title">A puzzle<br>for <em>Anvi</em></h1>
+  <p class="intro-sub">Five interactive stages. Solve them all to spin the prize wheel.</p>
+  <div class="rules-card">
+    <h3>How it works</h3>
+    <div class="rule"><span class="rule-n">01</span><span class="rule-t">Each stage is a different kind of puzzle — spinning, dragging, tapping, sliding, flipping</span></div>
+    <div class="rule"><span class="rule-n">02</span><span class="rule-t">Hints are available but each one costs you something small</span></div>
+    <div class="rule"><span class="rule-n">03</span><span class="rule-t">Complete all five to unlock the prize roulette</span></div>
+    <div class="rule"><span class="rule-n">04</span><span class="rule-t">Whatever the wheel lands on, Jeet has to honour it. No exceptions.</span></div>
+  </div>
+  <button class="btn btn-gold" onclick="startPuzzle()">Begin</button>
+</div>
+
+<!-- PUZZLE SCREEN -->
+<div id="puzzle-screen" class="screen">
+  <div class="prog-wrap">
+    <div class="prog-head">
+      <span class="eyebrow">Progress</span>
+      <span class="eyebrow" id="prog-text">Stage 1 of 5</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div id="stage-container"></div>
+</div>
+
+<!-- WIN SCREEN -->
+<div id="win-screen" class="screen">
+  <div class="star-field" id="star-field"></div>
+  <div style="position:relative;z-index:2;width:100%;max-width:400px">
+    <div class="eyebrow" style="animation:fadeUp .6s ease both">you solved it</div>
+    <h1 class="win-title">You did it.</h1>
+    <p class="win-sub">Now spin the wheel and claim your prize.</p>
+    <div class="roulette-section">
+      <div class="roulette-label">Your Prizes</div>
+      <div class="wheel-wrap">
+        <div class="wheel-ptr"></div>
+        <canvas id="wheel-canvas" width="280" height="280"></canvas>
+        <div class="wheel-hub"></div>
+      </div>
+      <div class="prize-box" id="prize-box"><div class="prize-desc-text" style="color:var(--muted)">Tap the wheel to spin</div></div>
+      <button class="btn btn-gold" id="spin-btn" onclick="spinWheel()" style="width:100%">Spin the Wheel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── PRIZES ───
+const prizes=[
+  {emoji:'🍷',name:'Fancy Dinner',desc:"Restaurant of Jeet's choosing — because he has better taste."},
+  {emoji:'🍸',name:'Cocktail Night',desc:"A nice bar, Jeet's pick, Anvi's night."},
+  {emoji:'🎾',name:'Tennis Racket',desc:"Any racket Anvi wants. No questions asked."}
+];
+
+// ─── NAV ───
+let currentStage=0;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function startPuzzle(){show('puzzle-screen');renderStage(0)}
+function goToWin(){show('win-screen');spawnStars();drawWheel(0)}
+function advanceStage(){
+  currentStage++;
+  if(currentStage>=5){goToWin();return}
+  renderStage(currentStage);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(i){
+  document.getElementById('prog-fill').style.width=(i/5*100)+'%';
+  document.getElementById('prog-text').textContent=`Stage ${i+1} of 5`;
+}
+function renderStage(i){
+  updateProgress(i);
+  const c=document.getElementById('stage-container');c.innerHTML='';
+  [buildStage1,buildStage2,buildStage3,buildStage4,buildStage5][i](c);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── SHELL ───
+function stageShell(container,{num,title,desc,hint,hintCost,puzzleHTML}){
+  container.innerHTML=`
+    <div class="stage-tag">Stage ${num} of 5</div>
+    <div class="stage-name">${title}</div>
+    <p class="stage-desc">${desc}</p>
+    <div class="puzzle-box" style="padding:20px 18px">${puzzleHTML}</div>
+    <div class="puzzle-box" style="padding:14px 18px;margin-bottom:0">
+      <button class="hint-btn" id="hbtn-${num}" onclick="toggleHint(${num})">▸ Need a hint?</button>
+      <div class="hint-box" id="hbox-${num}">${hint}<div class="hint-cost">Cost: ${hintCost}</div></div>
+    </div>
+    <div class="fb" id="fb-${num}"></div>
+    <div class="success-panel" id="succ-${num}">
+      <div class="success-icon">✦</div>
+      <div class="success-title" id="stitle-${num}"></div>
+      <div class="success-sub" id="ssub-${num}"></div>
+      <button class="btn btn-gold" onclick="advanceStage()" style="margin-top:8px">${num<5?'Next Stage →':'Claim Your Prize →'}</button>
+    </div>`;
+}
+function toggleHint(n){
+  const b=document.getElementById(`hbox-${n}`),btn=document.getElementById(`hbtn-${n}`);
+  b.classList.toggle('open');btn.textContent=b.classList.contains('open')?'▾ Hide hint':'▸ Need a hint?';
+}
+function showFb(n,ok,msg){
+  const f=document.getElementById(`fb-${n}`);
+  f.className='fb '+(ok?'ok':'bad');f.textContent=(ok?'✓ ':'✗ ')+msg;
+}
+function showSuccess(n,title,sub){
+  document.getElementById(`stitle-${n}`).textContent=title;
+  document.getElementById(`ssub-${n}`).textContent=sub;
+  const p=document.getElementById(`succ-${n}`);p.classList.add('show');
+  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+// ════════════════════════════════
+// STAGE 1 — ROTARY CIPHER DIAL
+// Encoded "PSZI" with shift +8 (Savannah = 8 letters) → decode = LOVE (P-8=H? No)
+// Let's verify: L+8=T, O+8=W, V+8=D, E+8=M → TWDM. Reverse: TWDM-8 = LOVE ✓
+// So encode LOVE: L→T, O→W, V→D, E→M → "TWDM"
+// ════════════════════════════════
+function buildStage1(container){
+  stageShell(container,{num:1,title:"The Spinning Secret",
+    desc:"This message was scrambled by shifting each letter forward by a secret number. Drag the outer ring of the dial to find the right shift. When you decode it, you'll know.",
+    hint:"The shift equals the number of letters in the city where Anvi went to school.",
+    hintCost:"One genuine compliment about Jeet's cooking.",
+    puzzleHTML:`
+      <div class="dial-wrap">
+        <div>
+          <div class="cipher-display">T W D M</div>
+          <div class="cipher-sublabel">encoded message — drag the dial to decode</div>
+        </div>
+        <svg id="dial-svg" viewBox="0 0 240 240" width="240" height="240" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="120" cy="120" r="55" fill="#1c1823" stroke="#2a2535" stroke-width="1.5"/>
+          <g id="inner-ring"></g>
+          <g id="outer-ring"></g>
+          <polygon points="120,8 114,22 126,22" fill="#c8924a"/>
+          <line x1="120" y1="22" x2="120" y2="58" stroke="#c8924a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="120" cy="120" r="18" fill="#151219" stroke="#2a2535" stroke-width="1.5"/>
+        </svg>
+        <div class="shift-row">
+          <div class="shift-lbl">current shift</div>
+          <div class="shift-val" id="shift-val">0</div>
+        </div>
+        <div class="decoded-box" id="dial-decoded">— — — —</div>
+        <button class="btn btn-gold" onclick="checkDial()" style="width:100%">Submit</button>
+      </div>`
+  });
+  initDial();
+}
+
+let dialAngle=0,dialDragging=false,dialLastA=0;
+function initDial(){
+  const svg=document.getElementById('dial-svg');if(!svg)return;
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ',cx=120,cy=120;
+  const inner=document.getElementById('inner-ring');
+  for(let i=0;i<26;i++){
+    const a=i/26*Math.PI*2-Math.PI/2,r=72;
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    Object.assign(t,{});
+    t.setAttribute('x',cx+r*Math.cos(a));t.setAttribute('y',cy+r*Math.sin(a));
+    t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','central');
+    t.setAttribute('font-family','DM Mono,monospace');t.setAttribute('font-size','9.5');t.setAttribute('fill','#5a5268');
+    t.textContent=letters[i];inner.appendChild(t);
+  }
+  const outer=document.getElementById('outer-ring');
+  const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  ring.setAttribute('cx',120);ring.setAttribute('cy',120);ring.setAttribute('r',104);
+  ring.setAttribute('fill','none');ring.setAttribute('stroke','#332d42');ring.setAttribute('stroke-width','26');
+  outer.appendChild(ring);
+  for(let i=0;i<26;i++){
+    const a=i/26*Math.PI*2-Math.PI/2,r=104;
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',cx+r*Math.cos(a));t.setAttribute('y',cy+r*Math.sin(a));
+    t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','central');
+    t.setAttribute('font-family','DM Mono,monospace');t.setAttribute('font-size','9.5');t.setAttribute('fill','#c8924a');
+    t.textContent=letters[i];outer.appendChild(t);
+  }
+  function getA(e){
+    const r=svg.getBoundingClientRect();
+    const p=e.touches?e.touches[0]:e;
+    return Math.atan2(p.clientY-(r.top+r.height/2),p.clientX-(r.left+r.width/2));
+  }
+  svg.addEventListener('mousedown',e=>{dialDragging=true;dialLastA=getA(e)});
+  svg.addEventListener('touchstart',e=>{dialDragging=true;dialLastA=getA(e)},{passive:true});
+  window.addEventListener('mousemove',e=>{if(!dialDragging)return;const a=getA(e);let d=a-dialLastA;if(d>Math.PI)d-=Math.PI*2;if(d<-Math.PI)d+=Math.PI*2;dialAngle+=d;dialLastA=a;outer.setAttribute('transform',`rotate(${dialAngle*180/Math.PI},120,120)`);updateDial()});
+  window.addEventListener('touchmove',e=>{if(!dialDragging)return;const a=getA(e);let d=a-dialLastA;if(d>Math.PI)d-=Math.PI*2;if(d<-Math.PI)d+=Math.PI*2;dialAngle+=d;dialLastA=a;outer.setAttribute('transform',`rotate(${dialAngle*180/Math.PI},120,120)`);updateDial()},{passive:true});
+  window.addEventListener('mouseup',()=>dialDragging=false);
+  window.addEventListener('touchend',()=>dialDragging=false);
+}
+function updateDial(){
+  const shift=((Math.round(dialAngle*26/(Math.PI*2))%26)+26)%26;
+  document.getElementById('shift-val').textContent=shift;
+  const decoded='TWDM'.split('').map(c=>String.fromCharCode(((c.charCodeAt(0)-65-shift+26)%26)+65)).join(' ');
+  document.getElementById('dial-decoded').textContent=decoded;
+}
+function checkDial(){
+  const txt=document.getElementById('dial-decoded').textContent.replace(/\s/g,'');
+  if(txt==='LOVE'){showFb(1,true,'Correct.');showSuccess(1,'The dial reveals it.','You knew it all along.');}
+  else showFb(1,false,`"${txt}" — keep spinning.`);
+}
+
+// ════════════════════════════════
+// STAGE 2 — DRAG & DROP VANITY
+// Answer: Perfume(1) Moisturiser(2) Serum(3) Lip Gloss(4) Mascara(5)
+// ════════════════════════════════
+const VITEMS=[
+  {id:'perfume',emoji:'🌸',name:'Perfume'},
+  {id:'moisturiser',emoji:'🫧',name:'Moisturiser'},
+  {id:'serum',emoji:'💧',name:'Serum'},
+  {id:'lipgloss',emoji:'💄',name:'Lip Gloss'},
+  {id:'mascara',emoji:'👁',name:'Mascara'},
+];
+const VANSWER=['perfume','moisturiser','serum','lipgloss','mascara'];
+let vOrder=[];let vDragSrc=null;
+
+function buildStage2(container){
+  stageShell(container,{num:2,title:"Anvi's Vanity",
+    desc:"Five L'Oréal products need to go back on the shelf in the right order. Drag them until the clues all check out.",
+    hint:"Perfume is definitely first. Count 2 products between it and the Lip Gloss.",
+    hintCost:"One hug. Jeet's choice of when.",
+    puzzleHTML:`
+      <div>
+        <div class="vanity-clues">
+          <span>1.</span> Moisturiser is immediately left of Serum<br>
+          <span>2.</span> Lip Gloss is not at either end<br>
+          <span>3.</span> Mascara is somewhere to the right of Lip Gloss<br>
+          <span>4.</span> Perfume is at position 1<br>
+          <span>5.</span> Exactly 2 products separate Perfume and Lip Gloss
+        </div>
+        <div class="shelf-positions" id="shelf-pos-labels">
+          <div class="shelf-pos-label">①</div><div class="shelf-pos-label">②</div><div class="shelf-pos-label">③</div><div class="shelf-pos-label">④</div><div class="shelf-pos-label">⑤</div>
+        </div>
+        <div class="shelf" id="vanity-shelf"></div>
+        <button class="btn btn-gold" onclick="checkVanity()" style="width:100%;margin-top:14px">Check Order</button>
+      </div>`
+  });
+  vOrder=[...VITEMS].sort(()=>Math.random()-.5);
+  renderShelf();
+}
+function renderShelf(){
+  const shelf=document.getElementById('vanity-shelf');if(!shelf)return;shelf.innerHTML='';
+  vOrder.forEach((item,i)=>{
+    const el=document.createElement('div');
+    el.className='vanity-item';el.draggable=true;el.dataset.idx=i;
+    el.innerHTML=`<div class="item-emoji">${item.emoji}</div><div class="item-name">${item.name}</div>`;
+    el.addEventListener('dragstart',()=>{vDragSrc=i;setTimeout(()=>el.classList.add('dragging'),0)});
+    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag-over')});
+    el.addEventListener('dragleave',()=>el.classList.remove('drag-over'));
+    el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('drag-over');if(vDragSrc!==null&&vDragSrc!==i){[vOrder[vDragSrc],vOrder[i]]=[vOrder[i],vOrder[vDragSrc]];renderShelf()}});
+    // touch swap: tap to select, tap again to swap
+    el.addEventListener('click',()=>{
+      if(vDragSrc===null){vDragSrc=i;el.style.borderColor='var(--gold)'}
+      else if(vDragSrc===i){vDragSrc=null;el.style.borderColor=''}
+      else{[vOrder[vDragSrc],vOrder[i]]=[vOrder[i],vOrder[vDragSrc]];vDragSrc=null;renderShelf()}
+    });
+    shelf.appendChild(el);
+  });
+}
+function checkVanity(){
+  if(vOrder.map(v=>v.id).join(',')===VANSWER.join(',')){
+    showFb(2,true,'Perfect arrangement.');
+    showSuccess(2,'Flawless design sense.','Exactly what a SCAD grad would figure out.');
+  } else {
+    showFb(2,false,'Not right — keep rearranging. (Tap an item to select, tap another to swap)');
+  }
+}
+
+// ════════════════════════════════
+// STAGE 3 — CONSTELLATION TAP
+// 10 stars arranged roughly as a heart. Tap in order 1→10.
+// ════════════════════════════════
+const STARS=[
+  {x:.50,y:.15,n:1},{x:.68,y:.25,n:2},{x:.84,y:.38,n:3},{x:.84,y:.56,n:4},
+  {x:.68,y:.72,n:5},{x:.50,y:.85,n:6},{x:.32,y:.72,n:7},{x:.16,y:.56,n:8},
+  {x:.16,y:.38,n:9},{x:.32,y:.25,n:10}
+];
+let starTapped=[],starCtx=null,starCanvas=null;
+
+function buildStage3(container){
+  stageShell(container,{num:3,title:"Connect the Stars",
+    desc:"Tap the numbered stars in order from 1 to 10 to trace a hidden constellation. What shape does it make?",
+    hint:"Just follow 1 through 10. The shape that forms is what this whole puzzle is about.",
+    hintCost:"One snack, Jeet's pick.",
+    puzzleHTML:`
+      <div class="constellation-wrap">
+        <canvas id="star-canvas" width="300" height="300" style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;width:100%;max-width:300px;height:auto"></canvas>
+        <div class="seq-display" id="star-seq">Tap star № 1 to begin</div>
+        <button class="btn btn-ghost" onclick="resetStars()" style="font-size:10px;padding:10px 22px">Reset</button>
+      </div>`
+  });
+  setTimeout(initStarCanvas,60);
+}
+function initStarCanvas(){
+  starCanvas=document.getElementById('star-canvas');if(!starCanvas)return;
+  starCtx=starCanvas.getContext('2d');starTapped=[];drawStars();
+  function getPos(e){
+    const r=starCanvas.getBoundingClientRect();
+    const scaleX=300/r.width,scaleY=300/r.height;
+    const p=e.touches?e.changedTouches[0]:e;
+    return{x:(p.clientX-r.left)*scaleX,y:(p.clientY-r.top)*scaleY};
+  }
+  function tap(e){e.preventDefault();if(starTapped.length>=10)return;const{x,y}=getPos(e);handleStarTap(x,y)}
+  starCanvas.addEventListener('click',tap);
+  starCanvas.addEventListener('touchend',tap,{passive:false});
+}
+function drawStars(){
+  if(!starCtx)return;
+  starCtx.clearRect(0,0,300,300);
+  if(starTapped.length>1){
+    starCtx.beginPath();starCtx.strokeStyle='rgba(200,146,74,.45)';starCtx.lineWidth=1.5;
+    starTapped.forEach((si,i)=>{const s=STARS[si];i===0?starCtx.moveTo(s.x*300,s.y*300):starCtx.lineTo(s.x*300,s.y*300)});
+    starCtx.stroke();
+    if(starTapped.length===10){
+      const s0=STARS[starTapped[0]],sl=STARS[starTapped[starTapped.length-1]];
+      starCtx.beginPath();starCtx.moveTo(sl.x*300,sl.y*300);starCtx.lineTo(s0.x*300,s0.y*300);starCtx.stroke();
+    }
+  }
+  STARS.forEach((s,i)=>{
+    const tap=starTapped.includes(i);
+    starCtx.beginPath();starCtx.arc(s.x*300,s.y*300,tap?8:6,0,Math.PI*2);
+    starCtx.fillStyle=tap?'#c8924a':'rgba(237,229,212,0.85)';starCtx.fill();
+    if(!tap){starCtx.strokeStyle='rgba(237,229,212,.2)';starCtx.lineWidth=1;starCtx.stroke()}
+    starCtx.fillStyle=tap?'#0c0a10':'#2a2535';
+    starCtx.font=`bold ${tap?9:8}px DM Mono,monospace`;
+    starCtx.textAlign='center';starCtx.textBaseline='middle';
+    starCtx.fillText(s.n,s.x*300,s.y*300);
+  });
+}
+function handleStarTap(x,y){
+  const nextN=starTapped.length+1;
+  const targetIdx=STARS.findIndex(s=>s.n===nextN);
+  const ts=STARS[targetIdx];
+  const dist=Math.hypot(x-ts.x*300,y-ts.y*300);
+  const seq=document.getElementById('star-seq');
+  if(dist<28){
+    starTapped.push(targetIdx);drawStars();
+    if(starTapped.length<10){seq.textContent=`Good! Now tap № ${starTapped.length+1}`}
+    else{seq.textContent='Complete! The shape is a circle — like a ring. A cycle. Love.';setTimeout(()=>{showFb(3,true,'Constellation complete.');showSuccess(3,'A ring of stars.','Some shapes don\'t need words.')},500)}
+  } else {
+    seq.textContent=`Find star № ${nextN} — look carefully`;
+    starCtx.beginPath();starCtx.arc(ts.x*300,ts.y*300,20,0,Math.PI*2);
+    starCtx.strokeStyle='rgba(196,118,138,.4)';starCtx.lineWidth=1.5;starCtx.stroke();
+    setTimeout(drawStars,700);
+  }
+}
+function resetStars(){
+  starTapped=[];drawStars();
+  const seq=document.getElementById('star-seq');if(seq)seq.textContent='Tap star № 1 to begin';
+  const f=document.getElementById('fb-3');if(f)f.className='fb';
+}
+
+// ════════════════════════════════
+// STAGE 4 — SLIDING TILE PUZZLE
+// 3x3, tiles 1-8 + blank. Labels spell J E E T ♥ A N V (8 tiles)
+// Goal: 1 2 3 / 4 5 6 / 7 8 blank
+// ════════════════════════════════
+const TLABELS={1:'J',2:'E',3:'E',4:'T',5:'♥',6:'A',7:'N',8:'V',0:''};
+const TGOAL=[1,2,3,4,5,6,7,8,0];
+let tState=[],tMoves=0;
+
+function buildStage4(container){
+  stageShell(container,{num:4,title:"The Sliding Puzzle",
+    desc:"Slide the tiles into order: 1 through 8, blank in the bottom-right. The tiles spell something when solved.",
+    hint:"Click/tap a tile next to the blank space to slide it into place. Work row by row from the top.",
+    hintCost:"One dinner, Jeet's choosing (separate from the prize).",
+    puzzleHTML:`
+      <div class="slider-wrap">
+        <div class="tile-target">Goal: <span>1 2 3 / 4 5 6 / 7 8 _</span></div>
+        <div id="tile-grid"></div>
+        <div class="moves-count" id="moves-count">Moves: 0</div>
+        <button class="btn btn-ghost" onclick="shuffleTiles()" style="font-size:10px;padding:10px 24px">Shuffle</button>
+      </div>`
+  });
+  initTiles();
+}
+function initTiles(){tState=[...TGOAL];shuffleTiles()}
+function shuffleTiles(){
+  tState=[...TGOAL];
+  for(let i=0;i<300;i++){
+    const bi=tState.indexOf(0),nb=getNeighbors(bi);
+    const p=nb[Math.floor(Math.random()*nb.length)];
+    [tState[bi],tState[p]]=[tState[p],tState[bi]];
+  }
+  tMoves=0;renderTiles();
+}
+function getNeighbors(p){const r=Math.floor(p/3),c=p%3,res=[];if(r>0)res.push(p-3);if(r<2)res.push(p+3);if(c>0)res.push(p-1);if(c<2)res.push(p+1);return res}
+function renderTiles(){
+  const g=document.getElementById('tile-grid');if(!g)return;g.innerHTML='';
+  tState.forEach((v,i)=>{
+    const el=document.createElement('div');
+    el.className='tile'+(v===0?' empty':'');
+    el.textContent=v===0?'':TLABELS[v];
+    if(v!==0)el.addEventListener('click',()=>moveTile(i));
+    g.appendChild(el);
+  });
+  const mc=document.getElementById('moves-count');if(mc)mc.textContent=`Moves: ${tMoves}`;
+}
+function moveTile(i){
+  const bi=tState.indexOf(0);
+  if(!getNeighbors(bi).includes(i))return;
+  [tState[bi],tState[i]]=[tState[i],tState[bi]];tMoves++;renderTiles();
+  if(tState.every((v,i)=>v===TGOAL[i])){
+    showFb(4,true,'Solved! The tiles spell: J E E T ♥ A N V');
+    showSuccess(4,'Eight tiles. One message.','Just in case it wasn\'t obvious.');
+  }
+}
+
+// ════════════════════════════════
+// STAGE 5 — MEMORY FLIP
+// 8 pairs of things that belong to Jeet & Anvi
+// ════════════════════════════════
+const MPAIRS=['🐶','🍸','🎾','🎨','♟️','🌸','✈️','🍳'];
+let mCards=[],mFlipped=[],mMatched=0,mLocked=false;
+
+function buildStage5(container){
+  stageShell(container,{num:5,title:"Memory",
+    desc:"Flip the cards and find all 8 matching pairs. Every pair is something that belongs to us.",
+    hint:"Classic memory — flip two at a time. Pairs match by the icon.",
+    hintCost:"Nothing. You've earned this one.",
+    puzzleHTML:`
+      <div class="memory-wrap">
+        <div id="memory-grid"></div>
+        <div class="pairs-left" id="pairs-left">8 pairs remaining</div>
+        <div class="memory-msg" id="memory-msg"></div>
+      </div>`
+  });
+  initMemory();
+}
+function initMemory(){
+  const all=[...MPAIRS,...MPAIRS].map((e,i)=>({emoji:e,id:i,matched:false,flipped:false}));
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]}
+  mCards=all;mFlipped=[];mMatched=0;mLocked=false;renderMemory();
+}
+function renderMemory(){
+  const g=document.getElementById('memory-grid');if(!g)return;g.innerHTML='';
+  mCards.forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.className='mem-card'+(c.flipped||c.matched?' flipped':'')+(c.matched?' matched':'');
+    el.innerHTML=`<div class="mem-inner"><div class="mem-front"><span class="mem-q">?</span></div><div class="mem-back">${c.emoji}</div></div>`;
+    if(!c.matched)el.addEventListener('click',()=>flipCard(i));
+    g.appendChild(el);
+  });
+  const r=8-mMatched,pl=document.getElementById('pairs-left');
+  if(pl)pl.textContent=r>0?`${r} pair${r!==1?'s':''} remaining`:'All pairs found!';
+}
+function flipCard(i){
+  if(mLocked||mCards[i].flipped||mCards[i].matched)return;
+  mCards[i].flipped=true;mFlipped.push(i);renderMemory();
+  if(mFlipped.length===2){
+    mLocked=true;
+    const[a,b]=[mFlipped[0],mFlipped[1]];
+    setTimeout(()=>{
+      const mm=document.getElementById('memory-msg');
+      if(mCards[a].emoji===mCards[b].emoji){
+        mCards[a].matched=mCards[b].matched=true;mMatched++;
+        const msgs=['','Nice.','♥','Keep going.','Halfway.','Almost.','One more!',''];
+        if(mm)mm.textContent=mMatched<8?(msgs[mMatched-1]||''):'';
+        if(mMatched===8){setTimeout(()=>{showFb(5,true,'All pairs matched.');showSuccess(5,'You remembered everything.','Just like Jeet remembered to make this.')},400)}
+      } else {
+        mCards[a].flipped=mCards[b].flipped=false;
+        if(mm)mm.textContent='';
+      }
+      mFlipped=[];mLocked=false;renderMemory();
+    },850);
+  }
+}
+
+// ════════════════════════════════
+// WHEEL
+// ════════════════════════════════
+const WCOLS=['#c8924a','#c4768a','#7aab8a'];
+let wAngle=0,wSpinning=false,wSpun=false;
+function drawWheel(angle){
+  const canvas=document.getElementById('wheel-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d'),cx=140,cy=140,r=128,n=prizes.length,sl=Math.PI*2/n;
+  ctx.clearRect(0,0,280,280);
+  prizes.forEach((p,i)=>{
+    const s=angle+i*sl-Math.PI/2,e=s+sl;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    ctx.fillStyle=WCOLS[i];ctx.fill();
+    ctx.strokeStyle='#0c0a10';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+sl/2);ctx.textAlign='right';
+    ctx.font="bold 13px 'DM Mono',monospace";ctx.fillStyle='#0c0a10';ctx.fillText(p.emoji,r-10,4);
+    ctx.font="10px 'DM Mono',monospace";ctx.fillText(p.name,r-28,4);
+    ctx.restore();
+  });
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='#2a2535';ctx.lineWidth=3;ctx.stroke();
+}
+function spinWheel(){
+  if(wSpinning)return;wSpinning=true;
+  const btn=document.getElementById('spin-btn');btn.disabled=true;
+  document.getElementById('prize-box').innerHTML='<div class="prize-desc-text" style="color:var(--muted)">Spinning…</div>';
+  const target=Math.floor(Math.random()*prizes.length);
+  const sl=Math.PI*2/prizes.length,extra=(7+Math.floor(Math.random()*5))*Math.PI*2;
+  const final=-target*sl-sl/2+extra,dur=4500+Math.random()*1000,start=wAngle,t0=performance.now();
+  function ease(t){return 1-Math.pow(1-t,4)}
+  function frame(now){
+    const t=Math.min((now-t0)/dur,1);wAngle=start+(final-start)*ease(t);drawWheel(wAngle);
+    if(t<1){requestAnimationFrame(frame)}
+    else{wSpinning=false;revealPrize(target);btn.disabled=false;btn.textContent='Spin Again'}
+  }
+  requestAnimationFrame(frame);
+}
+function revealPrize(i){
+  const p=prizes[i];
+  document.getElementById('prize-box').innerHTML=`<div class="prize-emoji-big">${p.emoji}</div><div class="prize-name-big">${p.name}</div><div class="prize-desc-text">${p.desc}</div>`;
+}
+function spawnStars(){
+  const bg=document.getElementById('star-field');
+  for(let i=0;i<50;i++){
+    const s=document.createElement('div');s.className='sp';
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s`;
+    bg.appendChild(s);
+  }
+}
+</script>
+</body>
+</html>
