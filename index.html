@@ -7,20 +7,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=DM+Mono:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0c0a10;--surface:#151219;--card:#1c1823;--border:#2a2535;--border2:#332d42;
-  --cream:#ede5d4;--cream2:#c8bc9e;--gold:#c8924a;--gold2:#e8b96a;
-  --rose:#c4768a;--rose2:#e09aae;--sage:#7aab8a;--muted:#5a5268;--muted2:#7a7088;
-}
+:root{--bg:#0c0a10;--surface:#151219;--card:#1c1823;--border:#2a2535;--border2:#332d42;
+--cream:#ede5d4;--cream2:#c8bc9e;--gold:#c8924a;--gold2:#e8b96a;
+--rose:#c4768a;--rose2:#e09aae;--sage:#7aab8a;--muted:#5a5268;--muted2:#7a7088}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--cream);font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(196,118,138,.07),transparent),
-             radial-gradient(ellipse 60% 80% at 80% 100%,rgba(200,146,74,.06),transparent)}
+ background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(196,118,138,.07),transparent),
+ radial-gradient(ellipse 60% 80% at 80% 100%,rgba(200,146,74,.06),transparent)}
 .screen{display:none;position:relative;z-index:1}
 .screen.active{display:block}
 #intro.active,#win-screen.active{display:flex}
 .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted2)}
+
 /* INTRO */
 #intro{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 28px}
 .intro-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(44px,11vw,72px);color:var(--cream);margin:20px 0 16px;line-height:1.1}
@@ -31,6 +30,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .rule{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
 .rule-n{font-family:'DM Mono',monospace;font-size:11px;color:var(--rose);min-width:18px;margin-top:2px}
 .rule-t{font-size:15px;color:var(--cream2);line-height:1.5}
+
 /* BUTTONS */
 .btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 36px;border-radius:6px;border:none;cursor:pointer;transition:all .18s;outline:none}
 .btn-gold{background:var(--gold);color:var(--bg)}
@@ -38,8 +38,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .btn-gold:active{transform:translateY(0)}
 .btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
 .btn-ghost:hover{color:var(--cream);border-color:var(--muted2)}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
-/* PUZZLE WRAPPER */
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* SHELL */
 #puzzle-screen{max-width:520px;margin:0 auto;padding:28px 20px 80px}
 .prog-wrap{margin-bottom:36px}
 .prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -48,7 +49,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .stage-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
 .stage-name{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(24px,6vw,36px);color:var(--cream);margin-bottom:8px;line-height:1.2}
 .stage-desc{font-size:16px;font-style:italic;color:var(--muted2);line-height:1.6;margin-bottom:28px}
-.puzzle-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:18px}
+.puzzle-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 18px;margin-bottom:18px}
 .hint-btn{background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);padding:0;transition:color .2s}
 .hint-btn:hover{color:var(--rose)}
 .hint-box{background:rgba(196,118,138,.07);border:1px solid rgba(196,118,138,.18);border-radius:8px;padding:14px 16px;margin-top:12px;font-size:14px;font-style:italic;color:var(--rose2);display:none;line-height:1.6}
@@ -63,63 +64,72 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .success-icon{font-size:44px;animation:pop .5s cubic-bezier(.175,.885,.32,1.275) both}
 @keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
 .success-title{font-family:'Playfair Display',serif;font-style:italic;font-size:24px;color:var(--sage);margin:12px 0 6px}
-.success-sub{font-size:14px;font-style:italic;color:var(--muted2);margin-bottom:24px}
+.success-sub{font-size:14px;font-style:italic;color:var(--muted2);margin-bottom:24px;padding:0 20px}
 
-/* ── STAGE 1: ROTARY DIAL ── */
-.dial-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
-.cipher-display{font-family:'DM Mono',monospace;font-size:16px;color:var(--gold2);letter-spacing:.3em;text-align:center;padding:12px;background:rgba(200,146,74,.05);border-radius:6px;border:1px solid rgba(200,146,74,.15)}
-.cipher-sublabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:4px}
-#dial-svg{cursor:grab;touch-action:none;display:block}
-#dial-svg:active{cursor:grabbing}
-.shift-row{display:flex;flex-direction:column;align-items:center;gap:2px}
-.shift-val{font-family:'DM Mono',monospace;font-size:28px;color:var(--cream)}
-.shift-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-.decoded-box{font-family:'DM Mono',monospace;font-size:20px;color:var(--gold);background:rgba(200,146,74,.08);border:1px solid rgba(200,146,74,.2);border-radius:8px;padding:14px 18px;text-align:center;letter-spacing:.3em;width:100%}
+/* STAGE 1 — CRYPTEX */
+.crypt-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
+.crypt-clues{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;margin-bottom:8px}
+.crypt-clue{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-style:italic;color:var(--cream2);line-height:1.4;text-align:center}
+.crypt-clue span{display:block;font-family:'DM Mono',monospace;font-style:normal;font-size:9px;letter-spacing:.25em;color:var(--gold);margin-bottom:4px;text-transform:uppercase}
+.crypt-dials{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px 10px;box-shadow:inset 0 2px 8px rgba(0,0,0,.3)}
+.crypt-dial{display:flex;flex-direction:column;align-items:center;gap:6px}
+.crypt-arrow{background:none;border:1px solid var(--border2);color:var(--gold);width:40px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;transition:all .15s}
+.crypt-arrow:hover{background:rgba(200,146,74,.1);border-color:var(--gold)}
+.crypt-arrow:active{transform:scale(.95)}
+.crypt-window{width:54px;height:84px;position:relative;overflow:hidden;background:#0a0810;border-radius:8px;border:1px solid var(--border)}
+.crypt-letters{position:absolute;left:0;right:0;transition:transform .25s cubic-bezier(.25,.8,.25,1);font-family:'Playfair Display',serif;font-style:italic}
+.crypt-letter{height:28px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--muted);user-select:none}
+.crypt-letter.active{color:var(--gold);font-size:26px}
+.crypt-window::before,.crypt-window::after{content:'';position:absolute;left:0;right:0;height:28px;pointer-events:none;z-index:2}
+.crypt-window::before{top:0;background:linear-gradient(to bottom,#0a0810 10%,transparent)}
+.crypt-window::after{bottom:0;background:linear-gradient(to top,#0a0810 10%,transparent)}
 
-/* ── STAGE 2: DRAG SORT ── */
-.vanity-clues{font-size:14px;font-family:'DM Mono',monospace;color:var(--cream2);line-height:2.1;margin-bottom:18px}
-.vanity-clues span{color:var(--gold)}
-.shelf-positions{display:flex;justify-content:space-around;padding:0 4px;margin-bottom:6px}
-.shelf-pos-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;flex:1;text-align:center}
-.shelf{display:flex;gap:6px;padding:14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;min-height:88px;align-items:stretch}
-.vanity-item{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:10px 6px;text-align:center;cursor:grab;transition:all .15s;flex:1;user-select:none;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.vanity-item:active{cursor:grabbing;transform:scale(1.06);border-color:var(--gold)}
-.vanity-item.drag-over{border-color:var(--rose);background:rgba(196,118,138,.1);transform:scale(1.02)}
-.vanity-item.dragging{opacity:.35;border-style:dashed}
-.item-emoji{font-size:22px;line-height:1}
-.item-name{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2);white-space:nowrap}
+/* STAGE 2 — ANAGRAM */
+.ana-wrap{display:flex;flex-direction:column;gap:20px}
+.ana-slots{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.ana-slot{aspect-ratio:1;background:rgba(255,255,255,.025);border:1px dashed var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--cream);cursor:pointer;transition:all .15s;user-select:none;min-height:42px}
+.ana-slot.filled{border-style:solid;border-color:var(--gold);background:rgba(200,146,74,.12);color:var(--gold2)}
+.ana-slot.filled:hover{border-color:var(--rose);background:rgba(196,118,138,.15);color:var(--rose2)}
+.ana-tray-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ana-tray{display:flex;flex-wrap:wrap;gap:6px;min-height:56px;padding:10px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px}
+.ana-tile{width:42px;height:42px;background:var(--card);border:1px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--cream);cursor:pointer;transition:all .15s;user-select:none}
+.ana-tile:hover{border-color:var(--gold);background:rgba(200,146,74,.1);transform:translateY(-2px)}
+.ana-tile:active{transform:scale(.95)}
 
-/* ── STAGE 3: CONSTELLATION ── */
-.constellation-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
-#star-canvas{border-radius:12px;touch-action:none;display:block;max-width:100%}
-.seq-display{font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.12em;text-align:center;min-height:22px}
+/* STAGE 3 — LIGHTS OUT */
+.lo-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+.lo-info{font-size:14px;font-style:italic;color:var(--muted2);text-align:center;line-height:1.5}
+.lo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:280px}
+.lo-cell{aspect-ratio:1;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:var(--card)}
+.lo-cell:hover{transform:scale(.96)}
+.lo-cell.on{background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold));border-color:var(--gold2);box-shadow:0 0 14px rgba(200,146,74,.45),inset 0 0 8px rgba(255,230,180,.3)}
+.lo-moves{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
 
-/* ── STAGE 4: TILE SLIDER ── */
-.slider-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
-.tile-target{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted2);text-align:center}
-.tile-target span{color:var(--gold)}
-#tile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:255px;height:255px}
-.tile{background:var(--card);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;user-select:none;font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--cream)}
-.tile:hover:not(.empty){border-color:var(--gold);background:rgba(200,146,74,.08)}
-.tile.empty{background:transparent;border:1px dashed var(--border);cursor:default}
-.tile.empty:hover{border-color:var(--border);background:transparent}
-.moves-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
+/* STAGE 4 — HAMILTONIAN PATH */
+.ham-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.ham-info{font-size:14px;font-style:italic;color:var(--muted2);text-align:center;line-height:1.5;padding:0 8px}
+#ham-canvas{touch-action:none;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--border);display:block;max-width:100%}
+.ham-status{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--gold);min-height:18px;text-align:center}
 
-/* ── STAGE 5: MEMORY ── */
-.memory-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
-#memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:300px}
-.mem-card{aspect-ratio:1;border-radius:8px;cursor:pointer;perspective:600px;user-select:none}
-.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .35s ease;border-radius:8px}
-.mem-card.flipped .mem-inner,.mem-card.matched .mem-inner{transform:rotateY(180deg)}
-.mem-front,.mem-back{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:20px}
-.mem-front{background:var(--card);border:1px solid var(--border2)}
-.mem-back{background:var(--surface);border:1px solid var(--border);transform:rotateY(180deg)}
-.mem-card.matched .mem-front,.mem-card.matched .mem-back{border-color:var(--sage);background:rgba(122,171,138,.12)}
-.mem-q{font-family:'DM Mono',monospace;font-size:16px;color:var(--rose)}
-.memory-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:17px;color:var(--gold);text-align:center;min-height:26px}
-.pairs-left{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+/* STAGE 5 — NONOGRAM */
+.ng-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+.ng-info{font-size:13px;font-style:italic;color:var(--muted2);text-align:center;line-height:1.5;padding:0 12px}
+.ng-board{display:grid;grid-template-columns:auto 1fr;gap:2px}
+.ng-corner{background:transparent}
+.ng-col-clues{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
+.ng-col-clue{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:4px 2px;font-family:'DM Mono',monospace;font-size:12px;color:var(--cream2);gap:2px;min-height:48px}
+.ng-row-clues{display:grid;grid-template-rows:repeat(6,1fr);gap:2px}
+.ng-row-clue{display:flex;align-items:center;justify-content:flex-end;gap:4px;padding:0 6px;font-family:'DM Mono',monospace;font-size:12px;color:var(--cream2);min-width:48px}
+.ng-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:2px;background:var(--border);padding:1px;border-radius:6px}
+.ng-cell{aspect-ratio:1;background:var(--card);cursor:pointer;border-radius:3px;transition:all .15s;display:flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;font-size:14px;color:var(--muted)}
+.ng-cell.filled{background:var(--gold)}
+.ng-cell.xed{background:var(--card);color:var(--muted2)}
+.ng-cell.xed::before{content:'×'}
+.ng-toolbar{display:flex;gap:8px;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted2);margin-top:4px}
+.ng-mode{background:none;border:1px solid var(--border2);color:var(--muted2);padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:inherit;letter-spacing:inherit}
+.ng-mode.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
 
-/* ── WIN ── */
+/* WIN */
 #win-screen{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px}
 .win-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(40px,10vw,68px);color:var(--gold);margin:16px 0 12px;animation:fadeUp .8s ease both}
 .win-sub{font-size:17px;font-style:italic;color:var(--muted2);margin-bottom:48px;animation:fadeUp .8s .15s ease both}
@@ -145,13 +155,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <div id="intro" class="screen active">
   <div class="eyebrow" style="margin-bottom:28px">from jeet, with love</div>
   <h1 class="intro-title">A puzzle<br>for <em>Anvi</em></h1>
-  <p class="intro-sub">Five interactive stages. Solve them all to spin the prize wheel.</p>
+  <p class="intro-sub">Five stages. Each one harder than the last. Solve them all to spin the prize wheel.</p>
   <div class="rules-card">
     <h3>How it works</h3>
-    <div class="rule"><span class="rule-n">01</span><span class="rule-t">Each stage is a different kind of puzzle — spinning, dragging, tapping, sliding, flipping</span></div>
-    <div class="rule"><span class="rule-n">02</span><span class="rule-t">Hints are available but each one costs you something small</span></div>
-    <div class="rule"><span class="rule-n">03</span><span class="rule-t">Complete all five to unlock the prize roulette</span></div>
-    <div class="rule"><span class="rule-n">04</span><span class="rule-t">Whatever the wheel lands on, Jeet has to honour it. No exceptions.</span></div>
+    <div class="rule"><span class="rule-n">01</span><span class="rule-t">Five different puzzle mechanics — expect to think</span></div>
+    <div class="rule"><span class="rule-n">02</span><span class="rule-t">No typing answers. Everything is interactive</span></div>
+    <div class="rule"><span class="rule-n">03</span><span class="rule-t">Hints exist but each one costs you</span></div>
+    <div class="rule"><span class="rule-n">04</span><span class="rule-t">Whatever the wheel lands on, Jeet honours it. No exceptions.</span></div>
   </div>
   <button class="btn btn-gold" onclick="startPuzzle()">Begin</button>
 </div>
@@ -168,7 +178,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div id="stage-container"></div>
 </div>
 
-<!-- WIN SCREEN -->
+<!-- WIN -->
 <div id="win-screen" class="screen">
   <div class="star-field" id="star-field"></div>
   <div style="position:relative;z-index:2;width:100%;max-width:400px">
@@ -189,42 +199,32 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 
 <script>
-// ─── PRIZES ───
+// ═══════════════════════════════════════════
+// PRIZES
+// ═══════════════════════════════════════════
 const prizes=[
   {emoji:'🍷',name:'Fancy Dinner',desc:"Restaurant of Jeet's choosing — because he has better taste."},
   {emoji:'🍸',name:'Cocktail Night',desc:"A nice bar, Jeet's pick, Anvi's night."},
   {emoji:'🎾',name:'Tennis Racket',desc:"Any racket Anvi wants. No questions asked."}
 ];
 
-// ─── NAV ───
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
 let currentStage=0;
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function startPuzzle(){show('puzzle-screen');renderStage(0)}
 function goToWin(){show('win-screen');spawnStars();drawWheel(0)}
-function advanceStage(){
-  currentStage++;
-  if(currentStage>=5){goToWin();return}
-  renderStage(currentStage);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function updateProgress(i){
-  document.getElementById('prog-fill').style.width=(i/5*100)+'%';
-  document.getElementById('prog-text').textContent=`Stage ${i+1} of 5`;
-}
-function renderStage(i){
-  updateProgress(i);
-  const c=document.getElementById('stage-container');c.innerHTML='';
-  [buildStage1,buildStage2,buildStage3,buildStage4,buildStage5][i](c);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+function advanceStage(){currentStage++;if(currentStage>=5){goToWin();return}renderStage(currentStage);window.scrollTo({top:0,behavior:'smooth'})}
+function updateProgress(i){document.getElementById('prog-fill').style.width=(i/5*100)+'%';document.getElementById('prog-text').textContent=`Stage ${i+1} of 5`}
+function renderStage(i){updateProgress(i);const c=document.getElementById('stage-container');c.innerHTML='';[buildStage1,buildStage2,buildStage3,buildStage4,buildStage5][i](c);window.scrollTo({top:0,behavior:'smooth'})}
 
-// ─── SHELL ───
 function stageShell(container,{num,title,desc,hint,hintCost,puzzleHTML}){
   container.innerHTML=`
     <div class="stage-tag">Stage ${num} of 5</div>
     <div class="stage-name">${title}</div>
     <p class="stage-desc">${desc}</p>
-    <div class="puzzle-box" style="padding:20px 18px">${puzzleHTML}</div>
+    <div class="puzzle-box">${puzzleHTML}</div>
     <div class="puzzle-box" style="padding:14px 18px;margin-bottom:0">
       <button class="hint-btn" id="hbtn-${num}" onclick="toggleHint(${num})">▸ Need a hint?</button>
       <div class="hint-box" id="hbox-${num}">${hint}<div class="hint-cost">Cost: ${hintCost}</div></div>
@@ -237,380 +237,401 @@ function stageShell(container,{num,title,desc,hint,hintCost,puzzleHTML}){
       <button class="btn btn-gold" onclick="advanceStage()" style="margin-top:8px">${num<5?'Next Stage →':'Claim Your Prize →'}</button>
     </div>`;
 }
-function toggleHint(n){
-  const b=document.getElementById(`hbox-${n}`),btn=document.getElementById(`hbtn-${n}`);
-  b.classList.toggle('open');btn.textContent=b.classList.contains('open')?'▾ Hide hint':'▸ Need a hint?';
-}
-function showFb(n,ok,msg){
-  const f=document.getElementById(`fb-${n}`);
-  f.className='fb '+(ok?'ok':'bad');f.textContent=(ok?'✓ ':'✗ ')+msg;
-}
-function showSuccess(n,title,sub){
-  document.getElementById(`stitle-${n}`).textContent=title;
-  document.getElementById(`ssub-${n}`).textContent=sub;
-  const p=document.getElementById(`succ-${n}`);p.classList.add('show');
-  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
-}
+function toggleHint(n){const b=document.getElementById(`hbox-${n}`),btn=document.getElementById(`hbtn-${n}`);b.classList.toggle('open');btn.textContent=b.classList.contains('open')?'▾ Hide hint':'▸ Need a hint?'}
+function showFb(n,ok,msg){const f=document.getElementById(`fb-${n}`);f.className='fb '+(ok?'ok':'bad');f.textContent=(ok?'✓ ':'✗ ')+msg}
+function showSuccess(n,title,sub){document.getElementById(`stitle-${n}`).textContent=title;document.getElementById(`ssub-${n}`).textContent=sub;const p=document.getElementById(`succ-${n}`);p.classList.add('show');setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),100)}
 
-// ════════════════════════════════
-// STAGE 1 — ROTARY CIPHER DIAL
-// Encoded "PSZI" with shift +8 (Savannah = 8 letters) → decode = LOVE (P-8=H? No)
-// Let's verify: L+8=T, O+8=W, V+8=D, E+8=M → TWDM. Reverse: TWDM-8 = LOVE ✓
-// So encode LOVE: L→T, O→W, V→D, E→M → "TWDM"
-// ════════════════════════════════
-function buildStage1(container){
-  stageShell(container,{num:1,title:"The Spinning Secret",
-    desc:"This message was scrambled by shifting each letter forward by a secret number. Drag the outer ring of the dial to find the right shift. When you decode it, you'll know.",
-    hint:"The shift equals the number of letters in the city where Anvi went to school.",
-    hintCost:"One genuine compliment about Jeet's cooking.",
-    puzzleHTML:`
-      <div class="dial-wrap">
-        <div>
-          <div class="cipher-display">T W D M</div>
-          <div class="cipher-sublabel">encoded message — drag the dial to decode</div>
-        </div>
-        <svg id="dial-svg" viewBox="0 0 240 240" width="240" height="240" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="120" cy="120" r="55" fill="#1c1823" stroke="#2a2535" stroke-width="1.5"/>
-          <g id="inner-ring"></g>
-          <g id="outer-ring"></g>
-          <polygon points="120,8 114,22 126,22" fill="#c8924a"/>
-          <line x1="120" y1="22" x2="120" y2="58" stroke="#c8924a" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="120" cy="120" r="18" fill="#151219" stroke="#2a2535" stroke-width="1.5"/>
-        </svg>
-        <div class="shift-row">
-          <div class="shift-lbl">current shift</div>
-          <div class="shift-val" id="shift-val">0</div>
-        </div>
-        <div class="decoded-box" id="dial-decoded">— — — —</div>
-        <button class="btn btn-gold" onclick="checkDial()" style="width:100%">Submit</button>
-      </div>`
-  });
-  initDial();
-}
-
-let dialAngle=0,dialDragging=false,dialLastA=0;
-function initDial(){
-  const svg=document.getElementById('dial-svg');if(!svg)return;
-  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ',cx=120,cy=120;
-  const inner=document.getElementById('inner-ring');
-  for(let i=0;i<26;i++){
-    const a=i/26*Math.PI*2-Math.PI/2,r=72;
-    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
-    Object.assign(t,{});
-    t.setAttribute('x',cx+r*Math.cos(a));t.setAttribute('y',cy+r*Math.sin(a));
-    t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','central');
-    t.setAttribute('font-family','DM Mono,monospace');t.setAttribute('font-size','9.5');t.setAttribute('fill','#5a5268');
-    t.textContent=letters[i];inner.appendChild(t);
-  }
-  const outer=document.getElementById('outer-ring');
-  const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  ring.setAttribute('cx',120);ring.setAttribute('cy',120);ring.setAttribute('r',104);
-  ring.setAttribute('fill','none');ring.setAttribute('stroke','#332d42');ring.setAttribute('stroke-width','26');
-  outer.appendChild(ring);
-  for(let i=0;i<26;i++){
-    const a=i/26*Math.PI*2-Math.PI/2,r=104;
-    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t.setAttribute('x',cx+r*Math.cos(a));t.setAttribute('y',cy+r*Math.sin(a));
-    t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','central');
-    t.setAttribute('font-family','DM Mono,monospace');t.setAttribute('font-size','9.5');t.setAttribute('fill','#c8924a');
-    t.textContent=letters[i];outer.appendChild(t);
-  }
-  function getA(e){
-    const r=svg.getBoundingClientRect();
-    const p=e.touches?e.touches[0]:e;
-    return Math.atan2(p.clientY-(r.top+r.height/2),p.clientX-(r.left+r.width/2));
-  }
-  svg.addEventListener('mousedown',e=>{dialDragging=true;dialLastA=getA(e)});
-  svg.addEventListener('touchstart',e=>{dialDragging=true;dialLastA=getA(e)},{passive:true});
-  window.addEventListener('mousemove',e=>{if(!dialDragging)return;const a=getA(e);let d=a-dialLastA;if(d>Math.PI)d-=Math.PI*2;if(d<-Math.PI)d+=Math.PI*2;dialAngle+=d;dialLastA=a;outer.setAttribute('transform',`rotate(${dialAngle*180/Math.PI},120,120)`);updateDial()});
-  window.addEventListener('touchmove',e=>{if(!dialDragging)return;const a=getA(e);let d=a-dialLastA;if(d>Math.PI)d-=Math.PI*2;if(d<-Math.PI)d+=Math.PI*2;dialAngle+=d;dialLastA=a;outer.setAttribute('transform',`rotate(${dialAngle*180/Math.PI},120,120)`);updateDial()},{passive:true});
-  window.addEventListener('mouseup',()=>dialDragging=false);
-  window.addEventListener('touchend',()=>dialDragging=false);
-}
-function updateDial(){
-  const shift=((Math.round(dialAngle*26/(Math.PI*2))%26)+26)%26;
-  document.getElementById('shift-val').textContent=shift;
-  const decoded='TWDM'.split('').map(c=>String.fromCharCode(((c.charCodeAt(0)-65-shift+26)%26)+65)).join(' ');
-  document.getElementById('dial-decoded').textContent=decoded;
-}
-function checkDial(){
-  const txt=document.getElementById('dial-decoded').textContent.replace(/\s/g,'');
-  if(txt==='LOVE'){showFb(1,true,'Correct.');showSuccess(1,'The dial reveals it.','You knew it all along.');}
-  else showFb(1,false,`"${txt}" — keep spinning.`);
-}
-
-// ════════════════════════════════
-// STAGE 2 — DRAG & DROP VANITY
-// Answer: Perfume(1) Moisturiser(2) Serum(3) Lip Gloss(4) Mascara(5)
-// ════════════════════════════════
-const VITEMS=[
-  {id:'perfume',emoji:'🌸',name:'Perfume'},
-  {id:'moisturiser',emoji:'🫧',name:'Moisturiser'},
-  {id:'serum',emoji:'💧',name:'Serum'},
-  {id:'lipgloss',emoji:'💄',name:'Lip Gloss'},
-  {id:'mascara',emoji:'👁',name:'Mascara'},
+// ═══════════════════════════════════════════
+// STAGE 1 — THE CRYPTEX (4 dials, 4 clues → spells STAR)
+// ═══════════════════════════════════════════
+const CRYPT_ANS=['S','T','A','R'];
+const CRYPT_CLUES=[
+  {label:'Dial 1',text:'The sound a river makes on a map'},       // S (winding shape)
+  {label:'Dial 2',text:'Two lines crossing — one up, one across'}, // T
+  {label:'Dial 3',text:"First letter of the city where Anvi studied"}, // A (Atlanta)
+  {label:'Dial 4',text:'What a pirate growls when ready for battle'} // R (arrr)
 ];
-const VANSWER=['perfume','moisturiser','serum','lipgloss','mascara'];
-let vOrder=[];let vDragSrc=null;
+let cryptDials=[0,0,0,0];
 
-function buildStage2(container){
-  stageShell(container,{num:2,title:"Anvi's Vanity",
-    desc:"Five L'Oréal products need to go back on the shelf in the right order. Drag them until the clues all check out.",
-    hint:"Perfume is definitely first. Count 2 products between it and the Lip Gloss.",
-    hintCost:"One hug. Jeet's choice of when.",
+function buildStage1(c){
+  stageShell(c,{num:1,title:"The Cryptex",
+    desc:"Four dials, four riddles. Solve each one to find its letter, then spin the dials to line them up. When all four are correct, submit.",
+    hint:"One letter per clue. The answers spell a four-letter word. Up/down arrows spin each dial.",
+    hintCost:"One genuine compliment — Jeet's choice of topic.",
     puzzleHTML:`
-      <div>
-        <div class="vanity-clues">
-          <span>1.</span> Moisturiser is immediately left of Serum<br>
-          <span>2.</span> Lip Gloss is not at either end<br>
-          <span>3.</span> Mascara is somewhere to the right of Lip Gloss<br>
-          <span>4.</span> Perfume is at position 1<br>
-          <span>5.</span> Exactly 2 products separate Perfume and Lip Gloss
+      <div class="crypt-wrap">
+        <div class="crypt-clues">
+          ${CRYPT_CLUES.map((cl,i)=>`<div class="crypt-clue"><span>${cl.label}</span>${cl.text}</div>`).join('')}
         </div>
-        <div class="shelf-positions" id="shelf-pos-labels">
-          <div class="shelf-pos-label">①</div><div class="shelf-pos-label">②</div><div class="shelf-pos-label">③</div><div class="shelf-pos-label">④</div><div class="shelf-pos-label">⑤</div>
-        </div>
-        <div class="shelf" id="vanity-shelf"></div>
-        <button class="btn btn-gold" onclick="checkVanity()" style="width:100%;margin-top:14px">Check Order</button>
+        <div class="crypt-dials" id="crypt-dials"></div>
+        <button class="btn btn-gold" onclick="checkCryptex()" style="width:100%">Submit Combination</button>
       </div>`
   });
-  vOrder=[...VITEMS].sort(()=>Math.random()-.5);
-  renderShelf();
+  renderCryptex();
 }
-function renderShelf(){
-  const shelf=document.getElementById('vanity-shelf');if(!shelf)return;shelf.innerHTML='';
-  vOrder.forEach((item,i)=>{
-    const el=document.createElement('div');
-    el.className='vanity-item';el.draggable=true;el.dataset.idx=i;
-    el.innerHTML=`<div class="item-emoji">${item.emoji}</div><div class="item-name">${item.name}</div>`;
-    el.addEventListener('dragstart',()=>{vDragSrc=i;setTimeout(()=>el.classList.add('dragging'),0)});
-    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
-    el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag-over')});
-    el.addEventListener('dragleave',()=>el.classList.remove('drag-over'));
-    el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('drag-over');if(vDragSrc!==null&&vDragSrc!==i){[vOrder[vDragSrc],vOrder[i]]=[vOrder[i],vOrder[vDragSrc]];renderShelf()}});
-    // touch swap: tap to select, tap again to swap
-    el.addEventListener('click',()=>{
-      if(vDragSrc===null){vDragSrc=i;el.style.borderColor='var(--gold)'}
-      else if(vDragSrc===i){vDragSrc=null;el.style.borderColor=''}
-      else{[vOrder[vDragSrc],vOrder[i]]=[vOrder[i],vOrder[vDragSrc]];vDragSrc=null;renderShelf()}
-    });
-    shelf.appendChild(el);
-  });
+function renderCryptex(){
+  const row=document.getElementById('crypt-dials');if(!row)return;
+  row.innerHTML='';
+  for(let i=0;i<4;i++){
+    const d=document.createElement('div');d.className='crypt-dial';
+    d.innerHTML=`
+      <button class="crypt-arrow" onclick="spinDial(${i},-1)">▲</button>
+      <div class="crypt-window">
+        <div class="crypt-letters" id="cw-${i}"></div>
+      </div>
+      <button class="crypt-arrow" onclick="spinDial(${i},1)">▼</button>`;
+    row.appendChild(d);
+    updateDialVisual(i);
+  }
 }
-function checkVanity(){
-  if(vOrder.map(v=>v.id).join(',')===VANSWER.join(',')){
-    showFb(2,true,'Perfect arrangement.');
-    showSuccess(2,'Flawless design sense.','Exactly what a SCAD grad would figure out.');
+function updateDialVisual(i){
+  const w=document.getElementById(`cw-${i}`);if(!w)return;
+  const cur=cryptDials[i];
+  const letters=[];
+  for(let j=-1;j<=1;j++){
+    const idx=((cur+j)%26+26)%26;
+    letters.push(`<div class="crypt-letter ${j===0?'active':''}">${String.fromCharCode(65+idx)}</div>`);
+  }
+  w.innerHTML=letters.join('');
+  w.style.transform='translateY(-28px)';
+}
+function spinDial(i,dir){
+  cryptDials[i]=((cryptDials[i]+dir)%26+26)%26;
+  updateDialVisual(i);
+}
+function checkCryptex(){
+  const current=cryptDials.map(d=>String.fromCharCode(65+d)).join('');
+  if(current===CRYPT_ANS.join('')){
+    showFb(1,true,`Correct — ${current}`);
+    showSuccess(1,'The cryptex opens.','STAR — four riddles, four letters.');
   } else {
-    showFb(2,false,'Not right — keep rearranging. (Tap an item to select, tap another to swap)');
+    showFb(1,false,`${current} — not yet. Recheck each dial.`);
   }
 }
 
-// ════════════════════════════════
-// STAGE 3 — CONSTELLATION TAP
-// 10 stars arranged roughly as a heart. Tap in order 1→10.
-// ════════════════════════════════
-const STARS=[
-  {x:.50,y:.15,n:1},{x:.68,y:.25,n:2},{x:.84,y:.38,n:3},{x:.84,y:.56,n:4},
-  {x:.68,y:.72,n:5},{x:.50,y:.85,n:6},{x:.32,y:.72,n:7},{x:.16,y:.56,n:8},
-  {x:.16,y:.38,n:9},{x:.32,y:.25,n:10}
-];
-let starTapped=[],starCtx=null,starCanvas=null;
-
-function buildStage3(container){
-  stageShell(container,{num:3,title:"Connect the Stars",
-    desc:"Tap the numbered stars in order from 1 to 10 to trace a hidden constellation. What shape does it make?",
-    hint:"Just follow 1 through 10. The shape that forms is what this whole puzzle is about.",
-    hintCost:"One snack, Jeet's pick.",
+// ═══════════════════════════════════════════
+// STAGE 2 — DRAG ANAGRAM (arrange 8 tiles to spell UNLOCKED)
+// ═══════════════════════════════════════════
+const ANA_ANS='UNLOCKED';
+let anaTray=[],anaSlots=[];
+function buildStage2(c){
+  stageShell(c,{num:2,title:"The Anagram",
+    desc:"Eight scrambled letters. Drag them into the slots to spell the word that describes what you're doing right now — one letter at a time.",
+    hint:"The word is what happens to a door when you have the right key. Eight letters.",
+    hintCost:"One hug, Jeet's timing.",
     puzzleHTML:`
-      <div class="constellation-wrap">
-        <canvas id="star-canvas" width="300" height="300" style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;width:100%;max-width:300px;height:auto"></canvas>
-        <div class="seq-display" id="star-seq">Tap star № 1 to begin</div>
-        <button class="btn btn-ghost" onclick="resetStars()" style="font-size:10px;padding:10px 22px">Reset</button>
+      <div class="ana-wrap">
+        <div>
+          <div class="ana-tray-label">Slots</div>
+          <div class="ana-slots" id="ana-slots"></div>
+        </div>
+        <div>
+          <div class="ana-tray-label">Available letters — tap to place</div>
+          <div class="ana-tray" id="ana-tray"></div>
+        </div>
+        <button class="btn btn-gold" onclick="checkAnagram()" style="width:100%">Submit Word</button>
       </div>`
   });
-  setTimeout(initStarCanvas,60);
+  // shuffle tiles
+  const tiles=ANA_ANS.split('').sort(()=>Math.random()-.5);
+  anaTray=tiles.slice();
+  anaSlots=new Array(ANA_ANS.length).fill(null);
+  renderAnagram();
 }
-function initStarCanvas(){
-  starCanvas=document.getElementById('star-canvas');if(!starCanvas)return;
-  starCtx=starCanvas.getContext('2d');starTapped=[];drawStars();
-  function getPos(e){
-    const r=starCanvas.getBoundingClientRect();
-    const scaleX=300/r.width,scaleY=300/r.height;
-    const p=e.touches?e.changedTouches[0]:e;
-    return{x:(p.clientX-r.left)*scaleX,y:(p.clientY-r.top)*scaleY};
+function renderAnagram(){
+  const ts=document.getElementById('ana-slots');const tr=document.getElementById('ana-tray');
+  if(!ts||!tr)return;
+  ts.innerHTML='';tr.innerHTML='';
+  anaSlots.forEach((ch,i)=>{
+    const s=document.createElement('div');
+    s.className='ana-slot'+(ch?' filled':'');
+    s.textContent=ch||'';
+    s.onclick=()=>{if(ch){anaTray.push(ch);anaSlots[i]=null;renderAnagram()}};
+    ts.appendChild(s);
+  });
+  anaTray.forEach((ch,i)=>{
+    const t=document.createElement('div');
+    t.className='ana-tile';t.textContent=ch;
+    t.onclick=()=>{
+      const emptyIdx=anaSlots.findIndex(s=>s===null);
+      if(emptyIdx>=0){anaSlots[emptyIdx]=ch;anaTray.splice(i,1);renderAnagram()}
+    };
+    tr.appendChild(t);
+  });
+}
+function checkAnagram(){
+  if(anaSlots.some(s=>s===null)){showFb(2,false,'Fill every slot first.');return}
+  const word=anaSlots.join('');
+  if(word===ANA_ANS){
+    showFb(2,true,`Correct — ${word}`);
+    showSuccess(2,'The letters fall into place.','UNLOCKED — that\'s what you are.');
+  } else {
+    showFb(2,false,`${word} — not quite. Rearrange.`);
   }
-  function tap(e){e.preventDefault();if(starTapped.length>=10)return;const{x,y}=getPos(e);handleStarTap(x,y)}
-  starCanvas.addEventListener('click',tap);
-  starCanvas.addEventListener('touchend',tap,{passive:false});
 }
-function drawStars(){
-  if(!starCtx)return;
-  starCtx.clearRect(0,0,300,300);
-  if(starTapped.length>1){
-    starCtx.beginPath();starCtx.strokeStyle='rgba(200,146,74,.45)';starCtx.lineWidth=1.5;
-    starTapped.forEach((si,i)=>{const s=STARS[si];i===0?starCtx.moveTo(s.x*300,s.y*300):starCtx.lineTo(s.x*300,s.y*300)});
-    starCtx.stroke();
-    if(starTapped.length===10){
-      const s0=STARS[starTapped[0]],sl=STARS[starTapped[starTapped.length-1]];
-      starCtx.beginPath();starCtx.moveTo(sl.x*300,sl.y*300);starCtx.lineTo(s0.x*300,s0.y*300);starCtx.stroke();
+
+// ═══════════════════════════════════════════
+// STAGE 3 — LIGHTS OUT (5x5; toggle cell + 4 neighbors; goal: all OFF)
+// Starting state generated from known solution: tap (0,2),(2,0),(2,4),(4,2),(2,2)
+// ═══════════════════════════════════════════
+let loState=[];
+const LO_SOLUTION_TAPS=[[0,2],[2,0],[2,4],[4,2],[2,2]]; // these taps solve it
+
+function buildStage3(c){
+  stageShell(c,{num:3,title:"Lights Out",
+    desc:"Tap any cell to toggle it and its four neighbours (up, down, left, right). Goal: turn every light OFF. Fewer taps is better.",
+    hint:"There's a 5-tap solution. Try the four middle-edge cells plus the center. Think about symmetry.",
+    hintCost:"One dinner Jeet's choice (separate from the prize).",
+    puzzleHTML:`
+      <div class="lo-wrap">
+        <div class="lo-info">Tap a cell. It flips, and so do its 4 orthogonal neighbours.<br>Turn every light off.</div>
+        <div class="lo-grid" id="lo-grid"></div>
+        <div class="lo-moves" id="lo-moves">Moves: 0</div>
+        <button class="btn btn-ghost" onclick="resetLo()" style="font-size:10px;padding:10px 24px">Reset</button>
+      </div>`
+  });
+  resetLo();
+}
+let loMoves=0;
+function resetLo(){
+  loState=new Array(25).fill(false);
+  // apply solution taps to build initial state
+  LO_SOLUTION_TAPS.forEach(([r,c])=>loTap(r,c,false));
+  loMoves=0;
+  renderLo();
+}
+function loTap(r,c,count=true){
+  const toggle=(rr,cc)=>{if(rr>=0&&rr<5&&cc>=0&&cc<5)loState[rr*5+cc]=!loState[rr*5+cc]};
+  toggle(r,c);toggle(r-1,c);toggle(r+1,c);toggle(r,c-1);toggle(r,c+1);
+  if(count){loMoves++;
+    renderLo();
+    if(loState.every(v=>!v)){
+      showFb(3,true,`All off — solved in ${loMoves} moves!`);
+      showSuccess(3,'Darkness. Finally.',`${loMoves} moves. ${loMoves<=5?'Flawless.':loMoves<=10?'Well done.':'You got there.'}`);
     }
   }
-  STARS.forEach((s,i)=>{
-    const tap=starTapped.includes(i);
-    starCtx.beginPath();starCtx.arc(s.x*300,s.y*300,tap?8:6,0,Math.PI*2);
-    starCtx.fillStyle=tap?'#c8924a':'rgba(237,229,212,0.85)';starCtx.fill();
-    if(!tap){starCtx.strokeStyle='rgba(237,229,212,.2)';starCtx.lineWidth=1;starCtx.stroke()}
-    starCtx.fillStyle=tap?'#0c0a10':'#2a2535';
-    starCtx.font=`bold ${tap?9:8}px DM Mono,monospace`;
-    starCtx.textAlign='center';starCtx.textBaseline='middle';
-    starCtx.fillText(s.n,s.x*300,s.y*300);
-  });
 }
-function handleStarTap(x,y){
-  const nextN=starTapped.length+1;
-  const targetIdx=STARS.findIndex(s=>s.n===nextN);
-  const ts=STARS[targetIdx];
-  const dist=Math.hypot(x-ts.x*300,y-ts.y*300);
-  const seq=document.getElementById('star-seq');
-  if(dist<28){
-    starTapped.push(targetIdx);drawStars();
-    if(starTapped.length<10){seq.textContent=`Good! Now tap № ${starTapped.length+1}`}
-    else{seq.textContent='Complete! The shape is a circle — like a ring. A cycle. Love.';setTimeout(()=>{showFb(3,true,'Constellation complete.');showSuccess(3,'A ring of stars.','Some shapes don\'t need words.')},500)}
+function renderLo(){
+  const g=document.getElementById('lo-grid');if(!g)return;
+  g.innerHTML='';
+  for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+    const cell=document.createElement('div');
+    cell.className='lo-cell'+(loState[r*5+c]?' on':'');
+    cell.onclick=()=>loTap(r,c);
+    g.appendChild(cell);
+  }
+  const mv=document.getElementById('lo-moves');if(mv)mv.textContent=`Moves: ${loMoves}`;
+}
+
+// ═══════════════════════════════════════════
+// STAGE 4 — HAMILTONIAN PATH (5x5; visit every cell once, S→E)
+// ═══════════════════════════════════════════
+let hamPath=[],hamCanvas=null,hamCtx=null;
+const HAM_SIZE=5;
+const HAM_START={r:0,c:0},HAM_END={r:4,c:4};
+
+function buildStage4(c){
+  stageShell(c,{num:4,title:"The Path",
+    desc:"Trace a single path from S to E that visits every cell exactly once. No diagonals, no revisits, no gaps. Drag or tap cells in sequence.",
+    hint:"A serpentine (snaking up/down each column) works. Start by going down column 1 to the bottom, then one step right, then up column 2, and so on.",
+    hintCost:"One unsolicited \"I appreciate you\" text.",
+    puzzleHTML:`
+      <div class="ham-wrap">
+        <div class="ham-info">Start at <strong style="color:var(--gold)">S</strong>. End at <strong style="color:var(--rose)">E</strong>. Visit all 25 cells.</div>
+        <canvas id="ham-canvas" width="300" height="300"></canvas>
+        <div class="ham-status" id="ham-status">Tap S to begin</div>
+        <button class="btn btn-ghost" onclick="resetHam()" style="font-size:10px;padding:10px 24px">Reset Path</button>
+      </div>`
+  });
+  setTimeout(initHam,60);
+}
+function initHam(){
+  hamCanvas=document.getElementById('ham-canvas');if(!hamCanvas)return;
+  hamCtx=hamCanvas.getContext('2d');
+  hamPath=[];
+  drawHam();
+  function getPos(e){
+    const r=hamCanvas.getBoundingClientRect();
+    const p=e.touches?e.touches[0]:e;
+    const x=(p.clientX-r.left)*(300/r.width);
+    const y=(p.clientY-r.top)*(300/r.height);
+    const col=Math.floor(x/60),row=Math.floor(y/60);
+    return {r:row,c:col};
+  }
+  function handleTap(e){
+    e.preventDefault();
+    const cell=getPos(e);
+    if(cell.r<0||cell.r>=HAM_SIZE||cell.c<0||cell.c>=HAM_SIZE)return;
+    hamStep(cell.r,cell.c);
+  }
+  hamCanvas.addEventListener('click',handleTap);
+  // drag support
+  let dragging=false;
+  hamCanvas.addEventListener('mousedown',e=>{dragging=true;handleTap(e)});
+  hamCanvas.addEventListener('mousemove',e=>{if(dragging){const cell=getPos(e);if(cell.r>=0&&cell.r<5&&cell.c>=0&&cell.c<5)hamStep(cell.r,cell.c,true)}});
+  window.addEventListener('mouseup',()=>dragging=false);
+  hamCanvas.addEventListener('touchstart',e=>{dragging=true;handleTap(e)},{passive:false});
+  hamCanvas.addEventListener('touchmove',e=>{if(dragging){e.preventDefault();const cell=getPos(e);if(cell.r>=0&&cell.r<5&&cell.c>=0&&cell.c<5)hamStep(cell.r,cell.c,true)}},{passive:false});
+  window.addEventListener('touchend',()=>dragging=false);
+}
+function hamStep(r,c,silent=false){
+  if(hamPath.length===0){
+    if(r===HAM_START.r&&c===HAM_START.c){hamPath.push({r,c});drawHam();updateHamStatus()}
+    else if(!silent)updateHamStatus('Start at S (top-left)');
+    return;
+  }
+  const last=hamPath[hamPath.length-1];
+  // already in path? if it's the second-to-last, allow backtrack
+  if(hamPath.length>=2){
+    const prev=hamPath[hamPath.length-2];
+    if(r===prev.r&&c===prev.c){hamPath.pop();drawHam();updateHamStatus();return}
+  }
+  if(hamPath.some(p=>p.r===r&&p.c===c))return;
+  const dr=Math.abs(r-last.r),dc=Math.abs(c-last.c);
+  if(dr+dc!==1)return; // not adjacent
+  hamPath.push({r,c});
+  drawHam();
+  if(hamPath.length===25){
+    const lastCell=hamPath[24];
+    if(lastCell.r===HAM_END.r&&lastCell.c===HAM_END.c){
+      showFb(4,true,'Full path — all 25 cells visited!');
+      showSuccess(4,'A single unbroken line.','One path, every cell, start to end.');
+    } else {
+      updateHamStatus('All cells visited but must end at E');
+    }
   } else {
-    seq.textContent=`Find star № ${nextN} — look carefully`;
-    starCtx.beginPath();starCtx.arc(ts.x*300,ts.y*300,20,0,Math.PI*2);
-    starCtx.strokeStyle='rgba(196,118,138,.4)';starCtx.lineWidth=1.5;starCtx.stroke();
-    setTimeout(drawStars,700);
+    updateHamStatus();
   }
 }
-function resetStars(){
-  starTapped=[];drawStars();
-  const seq=document.getElementById('star-seq');if(seq)seq.textContent='Tap star № 1 to begin';
-  const f=document.getElementById('fb-3');if(f)f.className='fb';
+function updateHamStatus(msg){
+  const s=document.getElementById('ham-status');if(!s)return;
+  s.textContent=msg||`${hamPath.length} / 25 cells visited`;
 }
+function drawHam(){
+  if(!hamCtx)return;
+  hamCtx.clearRect(0,0,300,300);
+  // grid
+  for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+    const x=c*60,y=r*60;
+    const inPath=hamPath.some(p=>p.r===r&&p.c===c);
+    hamCtx.fillStyle=inPath?'rgba(200,146,74,0.18)':'rgba(255,255,255,0.015)';
+    hamCtx.fillRect(x+2,y+2,56,56);
+    hamCtx.strokeStyle='#2a2535';hamCtx.lineWidth=1;
+    hamCtx.strokeRect(x+2,y+2,56,56);
+  }
+  // path line
+  if(hamPath.length>1){
+    hamCtx.beginPath();
+    hamCtx.strokeStyle='#c8924a';hamCtx.lineWidth=4;
+    hamCtx.lineCap='round';hamCtx.lineJoin='round';
+    hamPath.forEach((p,i)=>{
+      const x=p.c*60+30,y=p.r*60+30;
+      if(i===0)hamCtx.moveTo(x,y);else hamCtx.lineTo(x,y);
+    });
+    hamCtx.stroke();
+  }
+  // dots
+  hamPath.forEach((p,i)=>{
+    const x=p.c*60+30,y=p.r*60+30;
+    hamCtx.beginPath();hamCtx.arc(x,y,4,0,Math.PI*2);
+    hamCtx.fillStyle=i===0?'#7aab8a':(i===hamPath.length-1?'#e8b96a':'#c8924a');
+    hamCtx.fill();
+  });
+  // labels
+  hamCtx.font="bold 14px 'DM Mono',monospace";hamCtx.textAlign='center';hamCtx.textBaseline='middle';
+  hamCtx.fillStyle='#7aab8a';hamCtx.fillText('S',HAM_START.c*60+30,HAM_START.r*60+30);
+  hamCtx.fillStyle='#c4768a';hamCtx.fillText('E',HAM_END.c*60+30,HAM_END.r*60+30);
+}
+function resetHam(){hamPath=[];drawHam();updateHamStatus('Tap S to begin');const f=document.getElementById('fb-4');if(f)f.className='fb'}
 
-// ════════════════════════════════
-// STAGE 4 — SLIDING TILE PUZZLE
-// 3x3, tiles 1-8 + blank. Labels spell J E E T ♥ A N V (8 tiles)
-// Goal: 1 2 3 / 4 5 6 / 7 8 blank
-// ════════════════════════════════
-const TLABELS={1:'J',2:'E',3:'E',4:'T',5:'♥',6:'A',7:'N',8:'V',0:''};
-const TGOAL=[1,2,3,4,5,6,7,8,0];
-let tState=[],tMoves=0;
+// ═══════════════════════════════════════════
+// STAGE 5 — NONOGRAM 6x6 (reveal a heart)
+// ═══════════════════════════════════════════
+const NG_SOL=[
+  [0,1,0,0,1,0],
+  [1,1,1,1,1,1],
+  [1,1,1,1,1,1],
+  [0,1,1,1,1,0],
+  [0,0,1,1,0,0],
+  [0,0,0,0,0,0]
+];
+const NG_ROW_CLUES=[[1,1],[6],[6],[4],[2],[0]];
+const NG_COL_CLUES=[[2],[4],[4],[4],[4],[2]];
+let ngState=[],ngMode='fill';
 
-function buildStage4(container){
-  stageShell(container,{num:4,title:"The Sliding Puzzle",
-    desc:"Slide the tiles into order: 1 through 8, blank in the bottom-right. The tiles spell something when solved.",
-    hint:"Click/tap a tile next to the blank space to slide it into place. Work row by row from the top.",
-    hintCost:"One dinner, Jeet's choosing (separate from the prize).",
+function buildStage5(c){
+  stageShell(c,{num:5,title:"The Picture",
+    desc:"Fill the grid so each row and column matches its number clues. A clue of \"4\" means 4 consecutive filled cells. Multiple numbers mean multiple runs (with at least one gap between). \"0\" means empty. When it's right, an image appears.",
+    hint:"Start with the columns that have a 4 — their fills are heavily constrained. Row 2 and row 3 are fully filled (clue 6). Row 6 is empty (clue 0). Use × to mark cells you're sure are empty.",
+    hintCost:"Nothing. You'll have earned it.",
     puzzleHTML:`
-      <div class="slider-wrap">
-        <div class="tile-target">Goal: <span>1 2 3 / 4 5 6 / 7 8 _</span></div>
-        <div id="tile-grid"></div>
-        <div class="moves-count" id="moves-count">Moves: 0</div>
-        <button class="btn btn-ghost" onclick="shuffleTiles()" style="font-size:10px;padding:10px 24px">Shuffle</button>
+      <div class="ng-wrap">
+        <div class="ng-info">Numbers at the top = consecutive filled cells in that column.<br>Numbers on the left = consecutive filled cells in that row.</div>
+        <div class="ng-board">
+          <div class="ng-corner"></div>
+          <div class="ng-col-clues" id="ng-col-clues"></div>
+          <div class="ng-row-clues" id="ng-row-clues"></div>
+          <div class="ng-grid" id="ng-grid"></div>
+        </div>
+        <div class="ng-toolbar">
+          <button class="ng-mode active" id="ng-mode-fill" onclick="setNgMode('fill')">FILL</button>
+          <button class="ng-mode" id="ng-mode-x" onclick="setNgMode('x')">MARK ×</button>
+          <button class="ng-mode" onclick="resetNg()">CLEAR</button>
+        </div>
+        <button class="btn btn-gold" onclick="checkNg()" style="width:100%;margin-top:6px">Check Picture</button>
       </div>`
   });
-  initTiles();
+  resetNg();
 }
-function initTiles(){tState=[...TGOAL];shuffleTiles()}
-function shuffleTiles(){
-  tState=[...TGOAL];
-  for(let i=0;i<300;i++){
-    const bi=tState.indexOf(0),nb=getNeighbors(bi);
-    const p=nb[Math.floor(Math.random()*nb.length)];
-    [tState[bi],tState[p]]=[tState[p],tState[bi]];
+function setNgMode(m){ngMode=m;document.getElementById('ng-mode-fill').classList.toggle('active',m==='fill');document.getElementById('ng-mode-x').classList.toggle('active',m==='x')}
+function resetNg(){ngState=Array(6).fill().map(()=>Array(6).fill(0));renderNg()}
+function renderNg(){
+  const cc=document.getElementById('ng-col-clues'),rc=document.getElementById('ng-row-clues'),g=document.getElementById('ng-grid');
+  if(!cc||!rc||!g)return;
+  cc.innerHTML='';
+  NG_COL_CLUES.forEach(arr=>{
+    const d=document.createElement('div');d.className='ng-col-clue';
+    arr.forEach(n=>{const s=document.createElement('span');s.textContent=n;d.appendChild(s)});
+    cc.appendChild(d);
+  });
+  rc.innerHTML='';
+  NG_ROW_CLUES.forEach(arr=>{
+    const d=document.createElement('div');d.className='ng-row-clue';
+    d.textContent=arr.join(' ');
+    rc.appendChild(d);
+  });
+  g.innerHTML='';
+  for(let r=0;r<6;r++)for(let c=0;c<6;c++){
+    const cell=document.createElement('div');
+    const v=ngState[r][c];
+    cell.className='ng-cell'+(v===1?' filled':'')+(v===-1?' xed':'');
+    cell.onclick=()=>{
+      if(ngMode==='fill')ngState[r][c]=v===1?0:1;
+      else ngState[r][c]=v===-1?0:-1;
+      renderNg();
+    };
+    g.appendChild(cell);
   }
-  tMoves=0;renderTiles();
 }
-function getNeighbors(p){const r=Math.floor(p/3),c=p%3,res=[];if(r>0)res.push(p-3);if(r<2)res.push(p+3);if(c>0)res.push(p-1);if(c<2)res.push(p+1);return res}
-function renderTiles(){
-  const g=document.getElementById('tile-grid');if(!g)return;g.innerHTML='';
-  tState.forEach((v,i)=>{
-    const el=document.createElement('div');
-    el.className='tile'+(v===0?' empty':'');
-    el.textContent=v===0?'':TLABELS[v];
-    if(v!==0)el.addEventListener('click',()=>moveTile(i));
-    g.appendChild(el);
-  });
-  const mc=document.getElementById('moves-count');if(mc)mc.textContent=`Moves: ${tMoves}`;
-}
-function moveTile(i){
-  const bi=tState.indexOf(0);
-  if(!getNeighbors(bi).includes(i))return;
-  [tState[bi],tState[i]]=[tState[i],tState[bi]];tMoves++;renderTiles();
-  if(tState.every((v,i)=>v===TGOAL[i])){
-    showFb(4,true,'Solved! The tiles spell: J E E T ♥ A N V');
-    showSuccess(4,'Eight tiles. One message.','Just in case it wasn\'t obvious.');
+function checkNg(){
+  let correct=true;
+  for(let r=0;r<6;r++)for(let c=0;c<6;c++){
+    const filled=ngState[r][c]===1?1:0;
+    if(filled!==NG_SOL[r][c]){correct=false;break}
   }
-}
-
-// ════════════════════════════════
-// STAGE 5 — MEMORY FLIP
-// 8 pairs of things that belong to Jeet & Anvi
-// ════════════════════════════════
-const MPAIRS=['🐶','🍸','🎾','🎨','♟️','🌸','✈️','🍳'];
-let mCards=[],mFlipped=[],mMatched=0,mLocked=false;
-
-function buildStage5(container){
-  stageShell(container,{num:5,title:"Memory",
-    desc:"Flip the cards and find all 8 matching pairs. Every pair is something that belongs to us.",
-    hint:"Classic memory — flip two at a time. Pairs match by the icon.",
-    hintCost:"Nothing. You've earned this one.",
-    puzzleHTML:`
-      <div class="memory-wrap">
-        <div id="memory-grid"></div>
-        <div class="pairs-left" id="pairs-left">8 pairs remaining</div>
-        <div class="memory-msg" id="memory-msg"></div>
-      </div>`
-  });
-  initMemory();
-}
-function initMemory(){
-  const all=[...MPAIRS,...MPAIRS].map((e,i)=>({emoji:e,id:i,matched:false,flipped:false}));
-  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]}
-  mCards=all;mFlipped=[];mMatched=0;mLocked=false;renderMemory();
-}
-function renderMemory(){
-  const g=document.getElementById('memory-grid');if(!g)return;g.innerHTML='';
-  mCards.forEach((c,i)=>{
-    const el=document.createElement('div');
-    el.className='mem-card'+(c.flipped||c.matched?' flipped':'')+(c.matched?' matched':'');
-    el.innerHTML=`<div class="mem-inner"><div class="mem-front"><span class="mem-q">?</span></div><div class="mem-back">${c.emoji}</div></div>`;
-    if(!c.matched)el.addEventListener('click',()=>flipCard(i));
-    g.appendChild(el);
-  });
-  const r=8-mMatched,pl=document.getElementById('pairs-left');
-  if(pl)pl.textContent=r>0?`${r} pair${r!==1?'s':''} remaining`:'All pairs found!';
-}
-function flipCard(i){
-  if(mLocked||mCards[i].flipped||mCards[i].matched)return;
-  mCards[i].flipped=true;mFlipped.push(i);renderMemory();
-  if(mFlipped.length===2){
-    mLocked=true;
-    const[a,b]=[mFlipped[0],mFlipped[1]];
-    setTimeout(()=>{
-      const mm=document.getElementById('memory-msg');
-      if(mCards[a].emoji===mCards[b].emoji){
-        mCards[a].matched=mCards[b].matched=true;mMatched++;
-        const msgs=['','Nice.','♥','Keep going.','Halfway.','Almost.','One more!',''];
-        if(mm)mm.textContent=mMatched<8?(msgs[mMatched-1]||''):'';
-        if(mMatched===8){setTimeout(()=>{showFb(5,true,'All pairs matched.');showSuccess(5,'You remembered everything.','Just like Jeet remembered to make this.')},400)}
-      } else {
-        mCards[a].flipped=mCards[b].flipped=false;
-        if(mm)mm.textContent='';
-      }
-      mFlipped=[];mLocked=false;renderMemory();
-    },850);
+  if(correct){
+    showFb(5,true,'Picture complete!');
+    showSuccess(5,'A heart appears.','Now spin the wheel — you\'ve earned it.');
+  } else {
+    showFb(5,false,'Not quite — check the row and column clues again.');
   }
 }
 
-// ════════════════════════════════
+// ═══════════════════════════════════════════
 // WHEEL
-// ════════════════════════════════
+// ═══════════════════════════════════════════
 const WCOLS=['#c8924a','#c4768a','#7aab8a'];
-let wAngle=0,wSpinning=false,wSpun=false;
+let wAngle=0,wSpinning=false;
 function drawWheel(angle){
   const canvas=document.getElementById('wheel-canvas');if(!canvas)return;
   const ctx=canvas.getContext('2d'),cx=140,cy=140,r=128,n=prizes.length,sl=Math.PI*2/n;
@@ -637,7 +658,7 @@ function spinWheel(){
   function ease(t){return 1-Math.pow(1-t,4)}
   function frame(now){
     const t=Math.min((now-t0)/dur,1);wAngle=start+(final-start)*ease(t);drawWheel(wAngle);
-    if(t<1){requestAnimationFrame(frame)}
+    if(t<1)requestAnimationFrame(frame);
     else{wSpinning=false;revealPrize(target);btn.disabled=false;btn.textContent='Spin Again'}
   }
   requestAnimationFrame(frame);
